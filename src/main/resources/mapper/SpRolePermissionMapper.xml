@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.vuemall.mapper.SpRolePermissionMapper">
+
+    <select id="getPermissionList" resultType="com.rufeng.vuemall.domain.SpPermission">
+        select t1.id as id,
+        t2.role_id as role_id,
+        t1.name as name,
+        t1.value as value
+        from sp_permission t1,
+        sp_role_permission t2
+        <where>
+            t1.id = t2.permission_id and
+            <foreach item="role" index="index" collection="list"
+                     open="(" separator="or" close=")">
+                t2.role_id = #{role.id}
+            </foreach>;
+        </where>
+
+    </select>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rufeng.vuemall.mapper.SpUserRoleMapper">
+    <select id="getRoleList" resultType="com.rufeng.vuemall.domain.SpRole">
+        select sp_user_role.role_id as id,
+               sp_role.name         as name,
+               sp_role.desp         as desp
+        from sp_user_role,
+             sp_role
+        where sp_user_role.user_id = #{userId}
+          and sp_role.status = 1
+          and sp_role.id = sp_user_role.role_id;
+    </select>
+</mapper>

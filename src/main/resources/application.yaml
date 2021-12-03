@@ -1,0 +1,21 @@
+server:
+  port: 8000
+
+spring:
+  session:
+    store-type: redis
+    timeout: 600000
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/vuemall?serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    static-path-pattern: /static/**
+    contentnegotiation:
+      media-types:
+        md: text/markdown; charset=utf-8
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
