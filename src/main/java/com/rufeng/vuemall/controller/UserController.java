@@ -40,7 +40,6 @@ import java.util.Map;
 @RequestMapping("/api/user")
 @PreAuthorize("hasAnyRole('admin', 'super_admin')")
 public class UserController {
-    private static final Log logger = LogFactory.getLog(UserController.class);
     private final SpUserService userService;
 
     public UserController(SpUserService userService) {
