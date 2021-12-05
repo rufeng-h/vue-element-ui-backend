@@ -1,6 +1,5 @@
 package com.rufeng.vuemall.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rufeng.vuemall.common.CommonResponse;
@@ -10,8 +9,6 @@ import com.rufeng.vuemall.domain.BO.PermissionWithChild;
 import com.rufeng.vuemall.domain.BO.RoleWithPermission;
 import com.rufeng.vuemall.domain.SpPermission;
 import com.rufeng.vuemall.domain.SpRole;
-import com.rufeng.vuemall.domain.SpRolePermission;
-import com.rufeng.vuemall.service.SpRolePermissionService;
 import com.rufeng.vuemall.service.SpRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,7 +34,6 @@ public class RoleController {
     private static final String RET_TYPE_LIST = "list";
     private static final String RET_TYPE_TREE = "tree";
     private final SpRoleService roleService;
-    private final SpRolePermissionService rolePermissionService;
     /**
      * 将角色permission树形化
      */
@@ -58,13 +54,17 @@ public class RoleController {
                 map.values().stream().filter(p -> p.getParentId() == 0).collect(Collectors.toList()));
     };
 
-    public RoleController(SpRoleService roleService, SpRolePermissionService rolePermissionService) {
+    public RoleController(SpRoleService roleService) {
         this.roleService = roleService;
-        this.rolePermissionService = rolePermissionService;
     }
 
     @GetMapping("/list")
-    public CommonResponse<RestPage<RoleWithPermission>> list(
+    public CommonResponse<List<SpRole>> list(){
+        return CommonResponse.success(roleService.list());
+    }
+
+    @GetMapping("/withPermissions")
+    public CommonResponse<RestPage<RoleWithPermission>> withPer(
             @RequestParam(required = false, defaultValue = RET_TYPE_LIST) String type,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
@@ -82,13 +82,7 @@ public class RoleController {
     public CommonResponse<Void> authorize(@Validated @RequestBody AuthorizationParam param) {
         Integer roleId = param.getRoleId();
         List<Integer> permissionIds = param.getPermissionIds();
-        List<SpRolePermission> collect = permissionIds.stream().map(id -> {
-            SpRolePermission rolePermission = new SpRolePermission();
-            rolePermission.setRoleId(roleId);
-            rolePermission.setPermissionId(id);
-            return rolePermission;
-        }).collect(Collectors.toList());
-        boolean b = rolePermissionService.saveOrUpdateBatch(collect);
+        boolean b = roleService.authorize(roleId, permissionIds);
         return b ? CommonResponse.success() : CommonResponse.failed();
     }
 
@@ -96,9 +90,7 @@ public class RoleController {
     public CommonResponse<Void> unauthorize(@Validated @RequestBody AuthorizationParam param) {
         Integer roleId = param.getRoleId();
         List<Integer> permissionIds = param.getPermissionIds();
-        QueryWrapper<SpRolePermission> wrapper = new QueryWrapper<>();
-        wrapper.eq("role_id", roleId).and(w -> w.in("permission_id", permissionIds));
-        boolean b = rolePermissionService.remove(wrapper);
+        boolean b = roleService.unauthorize(roleId, permissionIds);
         return b ? CommonResponse.success() : CommonResponse.failed();
     }
 }

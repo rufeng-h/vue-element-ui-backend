@@ -26,6 +26,15 @@ public class SpRole implements Serializable {
     private String desp;
     private Integer status;
     private Date createTime;
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Date getCreateTime() {
         return createTime;

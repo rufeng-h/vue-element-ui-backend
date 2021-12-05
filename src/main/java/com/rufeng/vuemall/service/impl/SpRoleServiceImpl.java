@@ -4,16 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rufeng.vuemall.domain.BO.RoleWithPermission;
-import com.rufeng.vuemall.domain.SpPermission;
 import com.rufeng.vuemall.domain.SpRole;
 import com.rufeng.vuemall.domain.SpRolePermission;
 import com.rufeng.vuemall.mapper.SpRoleMapper;
-import com.rufeng.vuemall.service.SpPermissionService;
 import com.rufeng.vuemall.service.SpRolePermissionService;
 import com.rufeng.vuemall.service.SpRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,5 +45,46 @@ public class SpRoleServiceImpl extends ServiceImpl<SpRoleMapper, SpRole> impleme
         roleWithPer.getRecords().forEach(w -> w.setPermissions(rolePermissionService.getPermissionListByRoleId(w.getId())));
 
         return roleWithPer;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean authorize(Integer roleId, List<Integer> permissionIds) {
+        List<SpRolePermission> collect = permissionIds.stream().map(id -> {
+            SpRolePermission rolePermission = new SpRolePermission();
+            rolePermission.setRoleId(roleId);
+            rolePermission.setPermissionId(id);
+            return rolePermission;
+        }).collect(Collectors.toList());
+        if (!rolePermissionService.saveOrUpdateBatch(collect)) {
+            return false;
+        }
+        updateTime(roleId);
+        return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean unauthorize(Integer roleId, List<Integer> permissionIds) {
+        QueryWrapper<SpRolePermission> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id", roleId).and(w -> w.in("permission_id", permissionIds));
+        if (!rolePermissionService.remove(wrapper)) {
+            return false;
+        }
+        updateTime(roleId);
+        return true;
+    }
+
+    /**
+     * 修改角色 updateTime字段
+     *
+     * @param roleId id
+     */
+    private void updateTime(Integer roleId) {
+        /* 角色更新时间 */
+        SpRole role = new SpRole();
+        role.setId(roleId);
+        role.setUpdateTime(new Date());
+        updateById(role);
     }
 }
