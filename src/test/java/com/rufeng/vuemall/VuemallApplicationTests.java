@@ -2,6 +2,7 @@ package com.rufeng.vuemall;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rufeng.vuemall.domain.SpPermission;
 import com.rufeng.vuemall.domain.SpRole;
 import com.rufeng.vuemall.domain.SpUser;
 import com.rufeng.vuemall.mapper.SpRolePermissionMapper;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @SpringBootTest
 class VuemallApplicationTests {
@@ -60,7 +62,6 @@ class VuemallApplicationTests {
 
     @Test
     public void test() {
-        System.out.println(roleService.list());
     }
 
 

@@ -1,7 +1,10 @@
 package com.rufeng.vuemall.service;
 
-import com.rufeng.vuemall.domain.SpRole;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rufeng.vuemall.domain.BO.RoleWithPermission;
+import com.rufeng.vuemall.domain.SpPermission;
+import com.rufeng.vuemall.domain.SpRole;
 
 /**
  * <p>
@@ -12,5 +15,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-11-28
  */
 public interface SpRoleService extends IService<SpRole> {
+    /**
+     * 附带对应权限的角色列表
+     * @param page 分页参数
+     * @return page
+     */
+    IPage<RoleWithPermission> pageRoleWithPermission(IPage<SpRole> page);
+
 
 }

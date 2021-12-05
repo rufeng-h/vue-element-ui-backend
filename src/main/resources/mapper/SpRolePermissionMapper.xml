@@ -16,6 +16,11 @@
                 t2.role_id = #{role.id}
             </foreach>;
         </where>
-
+    </select>
+    <select id="getPermissionListByRoleId" resultType="com.rufeng.vuemall.domain.SpPermission">
+        select sp_permission.*
+        from sp_permission
+                 left join sp_role_permission on sp_permission.id = sp_role_permission.permission_id
+        where sp_role_permission.role_id = #{roleId}
     </select>
 </mapper>

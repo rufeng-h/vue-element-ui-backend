@@ -1,6 +1,5 @@
 package com.rufeng.vuemall.service.impl;
 
-import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -178,8 +177,7 @@ public class SpUserServiceImpl extends ServiceImpl<SpUserMapper, SpUser> impleme
     @Override
     public Integer updateUser(SpUser user, List<Integer> roles) {
         Integer ret = baseMapper.updateById(user);
-        boolean succ = userRoleService.removeByMap(Collections.singletonMap("user_id", user.getId()));
-        Assert.isTrue(succ, "操作异常");
+        userRoleService.removeByMap(Collections.singletonMap("user_id", user.getId()));
         List<SpUserRole> list = roleIds2UserRole(user.getId(), roles);
         userRoleService.saveBatch(list);
         return ret;
@@ -195,6 +193,11 @@ public class SpUserServiceImpl extends ServiceImpl<SpUserMapper, SpUser> impleme
         }).collect(Collectors.toList());
     }
 
+    /**
+     * 为每个user查询并设置roleList
+     * @param userPage userpage
+     * @return useri
+     */
     private IPage<UserInfoWithRole> setRoles(IPage<SpUser> userPage) {
         IPage<UserInfoWithRole> userInfoWithRoles = userPage.convert(USER_TO_USERINFO);
         /*开始查询角色*/

@@ -11,10 +11,9 @@ import java.util.StringJoiner;
  * @package com.rufeng.vuemall.domain.BO
  * @description 带角色信息的UserInfo，用于管理员查看
  */
-public class UserInfoWithRole extends UserInfoImpl implements RoleContainer {
+public class UserInfoWithRole extends UserInfoImpl {
     private List<SpRole> roles;
 
-    @Override
     public List<SpRole> getRoles() {
         return roles;
     }

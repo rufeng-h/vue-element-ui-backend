@@ -7,10 +7,7 @@ package com.rufeng.vuemall.domain.BO;
  * @Description:
  */
 
-import com.rufeng.vuemall.validator.annotation.EnumValue;
-import com.rufeng.vuemall.validator.annotation.Insert;
-import com.rufeng.vuemall.validator.annotation.Unique;
-import com.rufeng.vuemall.validator.annotation.Update;
+import com.rufeng.vuemall.validator.annotation.*;
 
 import javax.validation.constraints.*;
 import java.util.Date;
@@ -29,7 +26,7 @@ public class UserInfoImpl implements UserInfo {
     private String qq;
     @EnumValue(value = {"男", "女"}, message = "请选择正确的性别")
     private String gender;
-    @Pattern(regexp = "^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][189]))[0-9]{8}$", message = "手机号格式错误")
+    @Phone
     @Unique(message = "手机号已存在", tableColumn = "mobile", groups = Insert.class)
     private String mobile;
     private String introduction;
