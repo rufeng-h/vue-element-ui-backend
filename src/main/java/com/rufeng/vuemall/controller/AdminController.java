@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 @PreAuthorize("hasAnyRole('admin', 'super_admin')")
 public class AdminController {
-    @GetMapping("/authentication")
+    @GetMapping("/auth")
     public CommonResponse<Authentication> authenticationInfo() {
         return CommonResponse.success(SecurityContextHolder.getContext().getAuthentication());
     }
