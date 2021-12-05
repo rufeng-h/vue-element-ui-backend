@@ -60,26 +60,29 @@ public interface SpUserService extends IService<SpUser> {
     IPage<UserInfoWithRole> searchPage(IPage<SpUser> page, String query);
 
     /**
+     * 添加用户
      *
-     * @param roleIds
-     * @return
+     * @param user    用户信息
+     * @param roleIds 该用户的角色id列表
+     * @return added count
      */
     Integer addUser(SpUser user, List<Integer> roleIds);
 
     /**
      * 校验字段值在数据库中是否已存在
      *
-     * @param column
-     * @param value
+     * @param column db列名
+     * @param value  值
      * @return true 通过校验，否则 false
      */
     boolean checkUniqueColumn(String column, String value);
 
     /**
+     * 更新用户信息
      *
-     * @param user entity
+     * @param user  entity
      * @param roles roleList
-     * @return
+     * @return updated count
      */
     Integer updateUser(SpUser user, List<Integer> roles);
 }
