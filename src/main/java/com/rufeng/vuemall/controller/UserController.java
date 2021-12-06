@@ -18,8 +18,6 @@ import com.rufeng.vuemall.domain.BO.UserInfoWithRole;
 import com.rufeng.vuemall.domain.SpUser;
 import com.rufeng.vuemall.service.SpUserService;
 import com.rufeng.vuemall.validator.annotation.Update;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ReflectionUtils;
