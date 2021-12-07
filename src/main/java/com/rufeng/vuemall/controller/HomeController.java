@@ -18,7 +18,6 @@ import java.util.List;
  */
 @RestController
 @Validated
-@PreAuthorize("hasAnyRole('admin', 'super_admin')")
 @RequestMapping("/api/home")
 public class HomeController {
     @GetMapping("/menuList")

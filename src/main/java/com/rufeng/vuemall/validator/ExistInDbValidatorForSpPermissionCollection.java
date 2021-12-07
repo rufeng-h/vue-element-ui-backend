@@ -26,9 +26,9 @@ public class ExistInDbValidatorForSpPermissionCollection implements ConstraintVa
 
     @Override
     public boolean isValid(Collection<Integer> value, ConstraintValidatorContext context) {
-        if (value.size() == 0) {
-            return true;
+        if (value == null || value.size() == 0) {
+            return false;
         }
-        return service.list(new QueryWrapper<SpPermission>().in("id", value)).size() == value.size();
+        return service.count(new QueryWrapper<SpPermission>().in("id", value)) == value.size();
     }
 }

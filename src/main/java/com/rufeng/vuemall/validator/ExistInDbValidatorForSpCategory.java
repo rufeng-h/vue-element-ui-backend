@@ -1,7 +1,5 @@
 package com.rufeng.vuemall.validator;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rufeng.vuemall.domain.SpCategory;
 import com.rufeng.vuemall.service.SpCategoryService;
 import com.rufeng.vuemall.validator.annotation.ExistInDbForSpCategory;
 import org.springframework.stereotype.Component;
@@ -26,6 +24,6 @@ public class ExistInDbValidatorForSpCategory implements ConstraintValidator<Exis
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        return service.getById(new QueryWrapper<SpCategory>().eq("id", value)) != null;
+        return value != null && service.getById(value) != null;
     }
 }

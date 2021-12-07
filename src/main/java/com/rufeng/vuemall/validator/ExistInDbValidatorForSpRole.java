@@ -23,6 +23,6 @@ public class ExistInDbValidatorForSpRole implements ConstraintValidator<ExistInD
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        return service.getById(value) != null;
+        return value != null && service.getById(value) != null;
     }
 }

@@ -3,7 +3,15 @@ package com.rufeng.vuemall.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rufeng.vuemall.enums.AttributeSel;
+import com.rufeng.vuemall.validator.annotation.ExistInDbForSpCategory;
+import com.rufeng.vuemall.validator.group.Delete;
+import com.rufeng.vuemall.validator.group.Insert;
+import com.rufeng.vuemall.validator.group.Update;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,23 +31,29 @@ public class SpAttribute implements Serializable {
     /**
      * 主键id
      */
+    @Null(groups = Insert.class)
+    @NotNull(groups = Update.class)
+    @NotNull(groups = Delete.class)
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 属性名称
      */
+    @NotEmpty(message = "属性名不能为空")
     private String name;
 
     /**
      * 外键，类型id
      */
+    @ExistInDbForSpCategory
     private Integer categoryId;
 
     /**
      * only:输入框(唯一)  many:后台下拉列表/前台单选框
      */
-    private String attrSel;
+    @NotNull
+    private AttributeSel attrSel;
 
     /**
      * manual:手工录入  list:从列表选择
@@ -54,10 +68,8 @@ public class SpAttribute implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-    /**
-     * 删除时间标志
-     */
-    private Integer deleteTime;
+
+    private Integer status;
 
     public Date getUpdateTime() {
         return updateTime;
@@ -99,11 +111,11 @@ public class SpAttribute implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public String getAttrSel() {
+    public AttributeSel getAttrSel() {
         return attrSel;
     }
 
-    public void setAttrSel(String attrSel) {
+    public void setAttrSel(AttributeSel attrSel) {
         this.attrSel = attrSel;
     }
 
@@ -123,12 +135,12 @@ public class SpAttribute implements Serializable {
         this.attrVals = attrVals;
     }
 
-    public Integer getDeleteTime() {
-        return deleteTime;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setDeleteTime(Integer deleteTime) {
-        this.deleteTime = deleteTime;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
@@ -139,8 +151,6 @@ public class SpAttribute implements Serializable {
                 ", categoryId=" + categoryId +
                 ", attrSel=" + attrSel +
                 ", attrWrite=" + attrWrite +
-                ", attrVals=" + attrVals +
-                ", deleteTime=" + deleteTime +
                 "}";
     }
 }

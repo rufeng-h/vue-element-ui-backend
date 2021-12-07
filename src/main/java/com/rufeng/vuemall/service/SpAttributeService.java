@@ -15,10 +15,11 @@ import java.util.List;
  */
 public interface SpAttributeService extends IService<SpAttribute> {
     /**
-     * 通过cateid查询
-     *
+     * 通过cateid 和 attrsel查询
+     * @param attrSel sel type
      * @param categoryId cateid
      * @return list
      */
     List<SpAttribute> listByCateIdAndSel(Integer categoryId, String attrSel);
+
 }
