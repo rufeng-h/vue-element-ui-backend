@@ -8,7 +8,6 @@ import com.rufeng.vuemall.domain.BO.PermissionWithChild;
 import com.rufeng.vuemall.domain.SpPermission;
 import com.rufeng.vuemall.service.SpPermissionService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Validated
-@PreAuthorize("hasAnyRole('admin', 'super_admin')")
 @RequestMapping("/api/permission")
 public class PermissionController {
     private final SpPermissionService permissionService;
@@ -53,7 +51,7 @@ public class PermissionController {
 
     @GetMapping("/list")
     public CommonResponse<RestPage<SpPermission>> list(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                                   @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+                                                       @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         IPage<SpPermission> page = Page.of(pageNum, pageSize);
         IPage<SpPermission> ret = permissionService.page(page);
         RestPage<SpPermission> restPage = new RestPage<>();

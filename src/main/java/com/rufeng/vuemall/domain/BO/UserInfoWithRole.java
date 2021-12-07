@@ -1,6 +1,7 @@
 package com.rufeng.vuemall.domain.BO;
 
 import com.rufeng.vuemall.domain.SpRole;
+import com.rufeng.vuemall.domain.SpUser;
 
 import java.util.List;
 import java.util.StringJoiner;
@@ -11,7 +12,7 @@ import java.util.StringJoiner;
  * @package com.rufeng.vuemall.domain.BO
  * @description 带角色信息的UserInfo，用于管理员查看
  */
-public class UserInfoWithRole extends UserInfoImpl {
+public class UserInfoWithRole extends SpUser {
     private List<SpRole> roles;
 
     public List<SpRole> getRoles() {

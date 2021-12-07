@@ -27,12 +27,15 @@ public @interface EnumValue {
     String message() default "错误的枚举值";
 
     /*允许的值*/
-    String[] value();
+    String[] value() default {};
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    /*必须是下面枚举类中的一个，如果定义了这个值，value将被忽略*/
-//    Class<Enum<?>>[] targetEnum() default {};
+    /**
+     * 必须是下面枚举类中的一个，如果定义了这个值，value将被忽略
+     * 长度最多为1
+     */
+    Class<? extends Enum<?>>[] targetEnum() default {};
 }

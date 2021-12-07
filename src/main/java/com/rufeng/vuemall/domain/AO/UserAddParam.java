@@ -1,8 +1,7 @@
 package com.rufeng.vuemall.domain.AO;
 
-import com.rufeng.vuemall.domain.BO.UserInfoImpl;
-import com.rufeng.vuemall.service.impl.SpRoleServiceImpl;
-import com.rufeng.vuemall.validator.annotation.ExistInDbForSpRole;
+import com.rufeng.vuemall.domain.SpUser;
+import com.rufeng.vuemall.validator.annotation.ExistInDbForSpRoleCollection;
 
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -13,9 +12,9 @@ import java.util.List;
  * @package com.rufeng.vuemall.domain.AO
  * @description TODO
  */
-public class UserAddParam extends UserInfoImpl {
+public class UserAddParam extends SpUser {
     @Size(min = 1)
-    @ExistInDbForSpRole(message = "参数错误", tableColumn = "id", service = SpRoleServiceImpl.class)
+    @ExistInDbForSpRoleCollection(message = "参数错误")
     private List<Integer> roles;
 
     public List<Integer> getRoles() {

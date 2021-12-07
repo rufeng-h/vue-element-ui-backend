@@ -1,4 +1,4 @@
-package com.rufeng.vuemall.exceptions;
+package com.rufeng.vuemall.exception;
 
 /**
  * @author 黄纯峰

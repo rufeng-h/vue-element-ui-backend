@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rufeng.vuemall.domain.AO.LoginParam;
-import com.rufeng.vuemall.domain.BO.UserInfo;
 import com.rufeng.vuemall.domain.BO.UserInfoWithRole;
 import com.rufeng.vuemall.domain.SpPermission;
 import com.rufeng.vuemall.domain.SpRole;
@@ -20,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -71,8 +71,8 @@ public class SpUserServiceImpl extends ServiceImpl<SpUserMapper, SpUser> impleme
      * 根据用户名查询用户并授权
      *
      * @param username 用户名
-     * @return
-     * @throws UsernameNotFoundException
+     * @return user authenticated
+     * @throws UsernameNotFoundException exp
      */
     @Override
     public SpAuthenticatedUser loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -100,23 +100,22 @@ public class SpUserServiceImpl extends ServiceImpl<SpUserMapper, SpUser> impleme
     }
 
     /**
-     * @param param
+     * @param param loginParam
      * @return {@link UserInfo}
-     * @throws
+     * @throws AuthenticationException auth exp
      * @author 黄纯峰
      * @date 2021/11/30 11:37
      */
     @Override
-    public UserInfo login(LoginParam param) throws AuthenticationException {
+    public Authentication login(LoginParam param) throws AuthenticationException {
         SpAuthenticatedUser user = loadUserByUsername(param.getUsername());
         if (!passwordEncoder.matches(param.getPassword(), user.getPassword())) {
             throw new BadCredentialsException(user.getUsername() + " password error!");
         }
         UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken(user.getUserInfo(), null, user.getAuthorities());
-        token.eraseCredentials();
+                new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);
-        return user.getUserInfo();
+        return token;
     }
 
     /**
@@ -195,6 +194,7 @@ public class SpUserServiceImpl extends ServiceImpl<SpUserMapper, SpUser> impleme
 
     /**
      * 为每个user查询并设置roleList
+     *
      * @param userPage userpage
      * @return useri
      */

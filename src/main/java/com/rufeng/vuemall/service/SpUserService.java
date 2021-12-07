@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rufeng.vuemall.domain.AO.LoginParam;
-import com.rufeng.vuemall.domain.BO.UserInfo;
 import com.rufeng.vuemall.domain.BO.UserInfoWithRole;
 import com.rufeng.vuemall.domain.SpUser;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import java.util.List;
@@ -25,19 +25,19 @@ public interface SpUserService extends IService<SpUser> {
      * 登录
      *
      * @param param 通用登录参数
-     * @return {@link UserInfo}
+     * @return {@link UserInfoWithRole}
      * @throws AuthenticationException 认证错误
      * @author 黄纯峰
      * @date 2021/11/30 10:38
      */
-    UserInfo login(LoginParam param) throws AuthenticationException;
+    Authentication login(LoginParam param) throws AuthenticationException;
 
     /**
      * 分页查询
      *
      * @param page         分页参数
      * @param queryWrapper 查询条件
-     * @return {@link IPage<UserInfo>}
+     * @return {@link IPage<UserInfoWithRole>}
      * @author 黄纯峰
      * @date 2021/11/30 14:18
      */

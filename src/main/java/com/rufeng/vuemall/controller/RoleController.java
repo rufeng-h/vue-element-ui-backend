@@ -11,7 +11,6 @@ import com.rufeng.vuemall.domain.SpPermission;
 import com.rufeng.vuemall.domain.SpRole;
 import com.rufeng.vuemall.service.SpRoleService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Validated
-@PreAuthorize("hasAnyRole('admin', 'super_admin')")
 @RequestMapping("/api/role")
 public class RoleController {
     private static final String RET_TYPE_LIST = "list";
@@ -59,7 +57,7 @@ public class RoleController {
     }
 
     @GetMapping("/list")
-    public CommonResponse<List<SpRole>> list(){
+    public CommonResponse<List<SpRole>> list() {
         return CommonResponse.success(roleService.list());
     }
 

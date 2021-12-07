@@ -9,7 +9,6 @@ package com.rufeng.vuemall.controller;
 
 import com.rufeng.vuemall.common.CommonResponse;
 import com.rufeng.vuemall.domain.AO.LoginParam;
-import com.rufeng.vuemall.domain.BO.UserInfo;
 import com.rufeng.vuemall.service.SpUserService;
 import com.rufeng.vuemall.util.RequestUtils;
 import org.apache.commons.logging.Log;
@@ -59,19 +58,18 @@ public class CommonController {
             @Validated @RequestBody LoginParam param,
             @RequestParam(required = false) @Pattern(regexp = "/|/[^/]+/?", message = "参数错误") String redirect) {
         Map<String, Object> map = new HashMap<>(2);
+        Authentication authentication;
         String msg;
-        UserInfo userInfo;
         if (RequestUtils.isLogin()) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            userInfo = (UserInfo) authentication.getPrincipal();
+            authentication = SecurityContextHolder.getContext().getAuthentication();
             msg = "勿重复登录!";
         } else {
-            userInfo = userService.login(param);
+            authentication = userService.login(param);
             msg = "登录成功!";
-            logger.debug(userInfo.getUsername() + "login successfully!");
+            logger.debug(authentication.getName() + "login successfully!");
         }
         map.put("redirect", redirect == null ? DEFAULT_REDIRECT_URL : redirect);
-        map.put("userInfo", userInfo);
+        map.put("userInfo", authentication);
         return CommonResponse.redirect(msg, map);
     }
 }

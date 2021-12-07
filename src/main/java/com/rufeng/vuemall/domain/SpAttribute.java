@@ -3,7 +3,9 @@ package com.rufeng.vuemall.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -49,10 +51,29 @@ public class SpAttribute implements Serializable {
      */
     private String attrVals;
 
+    private Date createTime;
+
+    private Date updateTime;
     /**
      * 删除时间标志
      */
     private Integer deleteTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getId() {
         return id;
@@ -61,6 +82,7 @@ public class SpAttribute implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -68,6 +90,7 @@ public class SpAttribute implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public Integer getCategoryId() {
         return categoryId;
     }
@@ -75,6 +98,7 @@ public class SpAttribute implements Serializable {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
     public String getAttrSel() {
         return attrSel;
     }
@@ -82,6 +106,7 @@ public class SpAttribute implements Serializable {
     public void setAttrSel(String attrSel) {
         this.attrSel = attrSel;
     }
+
     public String getAttrWrite() {
         return attrWrite;
     }
@@ -89,6 +114,7 @@ public class SpAttribute implements Serializable {
     public void setAttrWrite(String attrWrite) {
         this.attrWrite = attrWrite;
     }
+
     public String getAttrVals() {
         return attrVals;
     }
@@ -96,6 +122,7 @@ public class SpAttribute implements Serializable {
     public void setAttrVals(String attrVals) {
         this.attrVals = attrVals;
     }
+
     public Integer getDeleteTime() {
         return deleteTime;
     }
@@ -107,13 +134,13 @@ public class SpAttribute implements Serializable {
     @Override
     public String toString() {
         return "SpAttribute{" +
-            "id=" + id +
-            ", name=" + name +
-            ", categoryId=" + categoryId +
-            ", attrSel=" + attrSel +
-            ", attrWrite=" + attrWrite +
-            ", attrVals=" + attrVals +
-            ", deleteTime=" + deleteTime +
-        "}";
+                "id=" + id +
+                ", name=" + name +
+                ", categoryId=" + categoryId +
+                ", attrSel=" + attrSel +
+                ", attrWrite=" + attrWrite +
+                ", attrVals=" + attrVals +
+                ", deleteTime=" + deleteTime +
+                "}";
     }
 }

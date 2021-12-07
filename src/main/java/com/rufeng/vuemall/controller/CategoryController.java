@@ -5,16 +5,17 @@ import com.rufeng.vuemall.common.CommonResponse;
 import com.rufeng.vuemall.common.RestPage;
 import com.rufeng.vuemall.domain.BO.CategoryWithChild;
 import com.rufeng.vuemall.service.SpCategoryService;
+import com.rufeng.vuemall.validator.annotation.ExistInDbForSpCategory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ValidationException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -64,10 +65,21 @@ public class CategoryController {
         return CommonResponse.success(treefy(records));
     }
 
+    @GetMapping("/treeAll")
+    public CommonResponse<List<CategoryWithChild>> treeAll() {
+        List<CategoryWithChild> list = categoryService.treeAll();
+        return CommonResponse.success(treefy(list));
+    }
+
     @PostMapping("/add")
     public CommonResponse<Void> add(@RequestParam String name,
                                     @RequestParam(required = false) @Min(0) @Max(2) Integer level,
+
+                                    @ExistInDbForSpCategory
                                     @RequestParam(required = false) Integer pid) {
+        if (pid == null ^ level == null) {
+            throw new ValidationException("参数错误");
+        }
         boolean b = categoryService.addCategory(name, level, pid);
         return b ? CommonResponse.success() : CommonResponse.failed();
     }

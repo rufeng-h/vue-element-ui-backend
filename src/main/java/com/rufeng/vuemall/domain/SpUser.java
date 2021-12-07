@@ -4,8 +4,13 @@ package com.rufeng.vuemall.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rufeng.vuemall.enums.Gender;
 import com.rufeng.vuemall.validator.annotation.EnumValue;
-import com.rufeng.vuemall.validator.annotation.Unique;
+import com.rufeng.vuemall.validator.annotation.Phone;
+import com.rufeng.vuemall.validator.annotation.UniqueInDbForSpUser;
+import com.rufeng.vuemall.validator.group.Insert;
+import com.rufeng.vuemall.validator.group.Update;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -18,21 +23,29 @@ import java.util.StringJoiner;
 @TableName("sp_user")
 public class SpUser implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
+    @Null(groups = Insert.class)
+    @NotNull(groups = Update.class)
     private Long id;
+
     @Size(min = 3, max = 10, message = "用户名3到10个字符")
-    @Unique(message = "用户名已存在", tableColumn = "username")
+    @UniqueInDbForSpUser(message = "用户名已存在", tableColumn = "username", groups = Insert.class)
     private String username;
-    @Unique(tableColumn = "qq", message = "QQ已存在")
+
+    @UniqueInDbForSpUser(tableColumn = "qq", message = "QQ已存在", groups = Insert.class)
     private String qq;
+
+    @JsonIgnore
     private String password;
-    @EnumValue(value = {"男", "女"}, message = "请选择正确的性别")
-    private String gender;
-    @Pattern(regexp = "^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][189]))[0-9]{8}$", message = "手机号格式错误")
-    @Unique(message = "手机号已存在", tableColumn = "mobile")
+
+    @EnumValue(targetEnum = Gender.class, message = "请选择正确的性别")
+    private Gender gender;
+
+    @Phone
+    @UniqueInDbForSpUser(message = "手机号已存在", tableColumn = "mobile", groups = Insert.class)
     private String mobile;
-    private String introduction;
+
     @Email(message = "邮箱格式错误")
-    @Unique(message = "邮箱已存在", tableColumn = "email")
+    @UniqueInDbForSpUser(message = "邮箱已存在", tableColumn = "email", groups = Insert.class)
     private String email;
     private Date createTime;
     private Date lastLoginTime;
@@ -40,6 +53,8 @@ public class SpUser implements Serializable {
     @Min(18)
     @Max(100)
     private Integer age;
+
+    private String introduction;
 
     public Integer getAge() {
         return age;
@@ -85,14 +100,13 @@ public class SpUser implements Serializable {
     }
 
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
-
 
     public String getMobile() {
         return mobile;
@@ -152,7 +166,6 @@ public class SpUser implements Serializable {
                 .add("id=" + id)
                 .add("username='" + username + "'")
                 .add("qq='" + qq + "'")
-                .add("password='" + password + "'")
                 .add("gender='" + gender + "'")
                 .add("mobile='" + mobile + "'")
                 .add("introduction='" + introduction + "'")

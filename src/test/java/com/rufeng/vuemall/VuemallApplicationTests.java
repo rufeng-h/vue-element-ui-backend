@@ -2,20 +2,21 @@ package com.rufeng.vuemall;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rufeng.vuemall.domain.SpPermission;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rufeng.vuemall.domain.SpRole;
 import com.rufeng.vuemall.domain.SpUser;
+import com.rufeng.vuemall.enums.Gender;
 import com.rufeng.vuemall.mapper.SpRolePermissionMapper;
 import com.rufeng.vuemall.mapper.SpUserMapper;
 import com.rufeng.vuemall.mapper.SpUserRoleMapper;
 import com.rufeng.vuemall.service.SpRoleService;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 @SpringBootTest
 class VuemallApplicationTests {
@@ -33,6 +34,9 @@ class VuemallApplicationTests {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void contextLoads() {
@@ -62,8 +66,9 @@ class VuemallApplicationTests {
 
     @Test
     public void test() {
-    }
+        Class<?> aClass = Gender.class;
 
+    }
 
 
     @Test

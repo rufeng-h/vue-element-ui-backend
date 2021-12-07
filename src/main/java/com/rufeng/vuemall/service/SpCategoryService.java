@@ -34,6 +34,12 @@ public interface SpCategoryService extends IService<SpCategory> {
     List<CategoryWithChild> treeLevel2();
 
     /**
+     * 所有分类
+     * @return list
+     */
+    List<CategoryWithChild> treeAll();
+
+    /**
      * 新增分类
      *
      * @param name  分类名

@@ -13,11 +13,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rufeng.vuemall.common.CommonResponse;
 import com.rufeng.vuemall.common.RestPage;
 import com.rufeng.vuemall.domain.AO.UserAddParam;
-import com.rufeng.vuemall.domain.BO.UserInfo;
 import com.rufeng.vuemall.domain.BO.UserInfoWithRole;
 import com.rufeng.vuemall.domain.SpUser;
 import com.rufeng.vuemall.service.SpUserService;
-import com.rufeng.vuemall.validator.annotation.Update;
+import com.rufeng.vuemall.validator.group.Insert;
+import com.rufeng.vuemall.validator.group.Update;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ReflectionUtils;
@@ -66,7 +66,7 @@ public class UserController {
      * @param query
      * @param pageSize
      * @param pageNum
-     * @return {@link CommonResponse<RestPage<UserInfo>>}
+     * @return {@link CommonResponse<RestPage<UserInfoWithRole>>}
      * @author 黄纯峰
      * @date 2021/12/1 19:15
      */
@@ -84,7 +84,7 @@ public class UserController {
 
     @PostMapping("/add")
     public CommonResponse<Void> addUser(
-            @Validated @RequestBody UserAddParam param) {
+            @Validated(Insert.class) @RequestBody UserAddParam param) {
         SpUser user = new SpUser();
         BeanUtils.copyProperties(param, user);
         return userService.addUser(user, param.getRoles()) == 1 ? CommonResponse.success("添加成功") : CommonResponse.failed("未知错误");
@@ -109,7 +109,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResponse<Void> updateUser(@Validated(value = Update.class) @RequestBody UserAddParam param) {
+    public CommonResponse<Void> updateUser(@Validated(Update.class) @RequestBody UserAddParam param) {
         SpUser user = new SpUser();
         BeanUtils.copyProperties(param, user);
         return userService.updateUser(user, param.getRoles()) == 1 ? CommonResponse.success() : CommonResponse.failed("未知错误");

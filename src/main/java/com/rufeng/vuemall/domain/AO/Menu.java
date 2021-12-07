@@ -30,12 +30,12 @@ public class Menu {
 
         Menu goodsMenu = new Menu(id++, "商品管理", "", "goods");
         goodsMenu.addSubMenu(new Menu(id++, "商品列表", "goods"));
-        goodsMenu.addSubMenu(new Menu(id++, "分类参数", "categoryAttr"));
+        goodsMenu.addSubMenu(new Menu(id++, "分类参数", "goodsCategoryAttr"));
         goodsMenu.addSubMenu(new Menu(id++, "商品分类", "goodsCategories"));
         MENU_LIST.add(goodsMenu);
 
         Menu orderMenu = new Menu(id++, "订单管理", "", "s-order");
-        orderMenu.addSubMenu(new Menu(id++, "订单列表", "orders"));
+        orderMenu.addSubMenu(new Menu(id, "订单列表", "orders"));
         MENU_LIST.add(orderMenu);
     }
 
