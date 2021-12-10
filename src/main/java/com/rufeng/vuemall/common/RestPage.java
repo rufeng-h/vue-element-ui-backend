@@ -1,5 +1,8 @@
 package com.rufeng.vuemall.common;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.beans.BeanUtils;
+
 import java.util.List;
 
 /**
@@ -14,6 +17,12 @@ public class RestPage<T> {
     private Long size = 10L;
     private Long pages;
     private List<T> records;
+
+    public static <T> RestPage<T> convert(IPage<T> iPage) {
+        RestPage<T> restPage = new RestPage<>();
+        BeanUtils.copyProperties(iPage, restPage);
+        return restPage;
+    }
 
     public Long getCurrent() {
         return current;

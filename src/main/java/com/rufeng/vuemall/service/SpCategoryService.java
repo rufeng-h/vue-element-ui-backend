@@ -1,10 +1,12 @@
 package com.rufeng.vuemall.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rufeng.vuemall.domain.BO.CategoryWithChild;
+import com.rufeng.vuemall.common.RestPage;
+import com.rufeng.vuemall.domain.BO.CategoryTreeNode;
 import com.rufeng.vuemall.domain.SpCategory;
-import org.springframework.lang.Nullable;
+import com.rufeng.vuemall.exception.InsertException;
 
 import java.util.List;
 
@@ -17,27 +19,18 @@ import java.util.List;
  * @since 2021-11-28
  */
 public interface SpCategoryService extends IService<SpCategory> {
-    /**
-     * 按一级分类分页，二级三级分类全部查询
-     *
-     * @param pageNum  current
-     * @param pageSize size
-     * @return page
-     */
-    IPage<CategoryWithChild> pageTree(Integer pageNum, Integer pageSize);
+
+    List<CategoryTreeNode> queryCateTreeNode();
+
+    RestPage<CategoryTreeNode> queryCateTreeNode(IPage<CategoryTreeNode> page);
 
     /**
-     * 查询所有一级与二级分类
-     *
+     * @param ew querywrapper
      * @return list
      */
-    List<CategoryWithChild> treeLevel2();
+    List<CategoryTreeNode> queryCateTreeNode(QueryWrapper<CategoryTreeNode> ew);
 
-    /**
-     * 所有分类
-     * @return list
-     */
-    List<CategoryWithChild> treeAll();
+    RestPage<CategoryTreeNode> queryCateTreeNode(QueryWrapper<CategoryTreeNode> ew, IPage<CategoryTreeNode> page);
 
     /**
      * 新增分类
@@ -46,6 +39,7 @@ public interface SpCategoryService extends IService<SpCategory> {
      * @param level 级别 可以为空
      * @param pid   父分类id 可以为空
      * @return succ
+     * @throws InsertException 插入异常
      */
-    boolean addCategory(String name, @Nullable Integer level, @Nullable Integer pid);
+    SpCategory addCategory(String name, Integer level, Integer pid) throws InsertException;
 }

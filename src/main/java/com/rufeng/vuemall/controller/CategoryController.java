@@ -1,12 +1,12 @@
 package com.rufeng.vuemall.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rufeng.vuemall.common.CommonResponse;
-import com.rufeng.vuemall.common.RestPage;
-import com.rufeng.vuemall.domain.BO.CategoryWithChild;
+import com.rufeng.vuemall.domain.BO.CategoryTreeNode;
+import com.rufeng.vuemall.domain.SpCategory;
 import com.rufeng.vuemall.service.SpCategoryService;
-import com.rufeng.vuemall.validator.annotation.ExistInDbForSpCategory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +14,8 @@ import javax.validation.ValidationException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.util.HashMap;
+import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author 黄纯峰
@@ -35,58 +34,53 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    private List<CategoryWithChild> treefy(List<CategoryWithChild> records) {
-        HashMap<Integer, CategoryWithChild> map = new HashMap<>(records.size());
-        records.forEach(s -> map.put(s.getCatId(), s));
-        records.forEach(s -> {
-            if (s.getCatPid() != 0) {
-                map.get(s.getCatPid()).append(s);
-            }
-        });
-        return records.stream().filter(s -> s.getCatPid() == 0).collect(Collectors.toList());
-    }
-
-    @GetMapping("/tree")
-    public CommonResponse<RestPage<CategoryWithChild>> tree(
-            @RequestParam(required = false, defaultValue = "5") Integer pageSize,
-            @RequestParam(required = false, defaultValue = "0") Integer pageNum) {
-        IPage<CategoryWithChild> page = categoryService.pageTree(pageNum, pageSize);
-        List<CategoryWithChild> records = page.getRecords();
-        page.setRecords(this.treefy(records));
-        RestPage<CategoryWithChild> restPage = new RestPage<>();
-        BeanUtils.copyProperties(page, restPage);
-        return CommonResponse.success(restPage);
-    }
-
-
-    @GetMapping("/treeLevel2")
-    public CommonResponse<List<CategoryWithChild>> treeLevel2() {
-        List<CategoryWithChild> records = categoryService.treeLevel2();
-        return CommonResponse.success(treefy(records));
-    }
-
-    @GetMapping("/treeAll")
-    public CommonResponse<List<CategoryWithChild>> treeAll() {
-        List<CategoryWithChild> list = categoryService.treeAll();
-        return CommonResponse.success(treefy(list));
-    }
-
     @PostMapping("/add")
-    public CommonResponse<Void> add(@RequestParam String name,
-                                    @RequestParam(required = false) @Min(0) @Max(2) Integer level,
-
-                                    @ExistInDbForSpCategory
-                                    @RequestParam(required = false) Integer pid) {
-        if (pid == null ^ level == null) {
-            throw new ValidationException("参数错误");
+    public CommonResponse<SpCategory> add(@RequestParam @Size(min = 3, max = 10) String name,
+                                          @RequestParam(required = false, defaultValue = "0")
+                                          @Min(0) @Max(2) Integer level,
+                                          @RequestParam(required = false, defaultValue = "0") Integer pid) {
+        if (pid != 0) {
+            SpCategory category = categoryService.getById(pid);
+            if (category == null || category.getCatLevel() != level - 1) {
+                throw new ValidationException("参数错误!");
+            }
         }
-        boolean b = categoryService.addCategory(name, level, pid);
-        return b ? CommonResponse.success() : CommonResponse.failed();
+        SpCategory category = categoryService.addCategory(name, level, pid);
+        return CommonResponse.success(category);
     }
 
     @PostMapping("/delete")
     public CommonResponse<Void> delete(@RequestBody @NotEmpty List<Integer> categoryIds) {
         boolean b = categoryService.removeByIds(categoryIds);
         return b ? CommonResponse.success() : CommonResponse.failed();
+    }
+
+
+    /**
+     * 按父级id获取分类
+     * 当分页参数指定时，返回分页数据
+     * 当分页参数不指定时，返回所有数据的list
+     *
+     * @param pid      父级id
+     * @param pageSize 每页条数
+     * @param pageNum  页码
+     * @return list or page data
+     */
+    @GetMapping("/list")
+    public CommonResponse<Object> list(@RequestParam Integer pid,
+                                       @RequestParam(required = false) Integer pageSize,
+                                       @RequestParam(required = false) Integer pageNum) {
+
+        if (pageNum == null ^ pageSize == null) {
+            throw new ValidationException("参数错误");
+        }
+        QueryWrapper<CategoryTreeNode> wrapper = new QueryWrapper<CategoryTreeNode>().eq("cat_pid", pid);
+        /* 不分页 */
+        if (pageNum == null) {
+            return CommonResponse.success(categoryService.queryCateTreeNode(wrapper));
+        }
+        /* 分页 */
+        IPage<CategoryTreeNode> page = Page.of(pageNum, pageSize);
+        return CommonResponse.success(categoryService.queryCateTreeNode(wrapper, page));
     }
 }

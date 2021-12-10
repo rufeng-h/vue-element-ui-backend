@@ -79,9 +79,12 @@ public class SpRole implements Serializable {
     @Override
     public String toString() {
         return new StringJoiner(", ", SpRole.class.getSimpleName() + "[", "]")
-                .add("roleId=" + id)
+                .add("id=" + id)
                 .add("name='" + name + "'")
                 .add("desp='" + desp + "'")
+                .add("status=" + status)
+                .add("createTime=" + createTime)
+                .add("updateTime=" + updateTime)
                 .toString();
     }
 }

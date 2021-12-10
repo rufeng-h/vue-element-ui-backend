@@ -18,7 +18,7 @@ import java.util.List;
  * @package com.rufeng.vuemall.controller
  * @description TODO
  */
-@RestController()
+@RestController
 @Validated
 @RequestMapping("/api/attribute")
 public class AttributeController {

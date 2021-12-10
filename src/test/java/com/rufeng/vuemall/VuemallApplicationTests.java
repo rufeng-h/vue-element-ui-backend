@@ -1,16 +1,19 @@
 package com.rufeng.vuemall;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rufeng.vuemall.domain.BO.CategoryTreeNode;
+import com.rufeng.vuemall.domain.BO.UserInfoWithRole;
 import com.rufeng.vuemall.domain.SpRole;
 import com.rufeng.vuemall.domain.SpUser;
-import com.rufeng.vuemall.enums.Gender;
+import com.rufeng.vuemall.mapper.SpCategoryMapper;
 import com.rufeng.vuemall.mapper.SpRolePermissionMapper;
 import com.rufeng.vuemall.mapper.SpUserMapper;
 import com.rufeng.vuemall.mapper.SpUserRoleMapper;
+import com.rufeng.vuemall.service.SpGoodsService;
 import com.rufeng.vuemall.service.SpRoleService;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +37,13 @@ class VuemallApplicationTests {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    private SpCategoryMapper mapper;
+
+    @Autowired
+    private SpGoodsService goodsService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -66,8 +76,10 @@ class VuemallApplicationTests {
 
     @Test
     public void test() {
-        Class<?> aClass = Gender.class;
-
+        QueryWrapper<CategoryTreeNode> wrapper = new QueryWrapper<CategoryTreeNode>().eq("cat_pid", 0);
+        System.out.println(mapper.queryCateTreeNode());
+        IPage<CategoryTreeNode> page = Page.of(7, 5);
+        System.out.println(mapper.queryCateTreeNode(wrapper, page).getRecords());
     }
 
 
@@ -82,6 +94,12 @@ class VuemallApplicationTests {
                 .eq("id", query).or()
                 .eq("gender", query);
 
-        System.out.println(userMapper.queryPage(Page.of(1, 2), wrapper));
+        System.out.println(userMapper.queryUserWithRole(Page.of(1, 2), wrapper));
+    }
+
+    @Test
+    public void testUserMapper() {
+        IPage<UserInfoWithRole> page = userMapper.queryUserWithRole(Page.of(1, 10), null);
+        System.out.println(page.getRecords());
     }
 }

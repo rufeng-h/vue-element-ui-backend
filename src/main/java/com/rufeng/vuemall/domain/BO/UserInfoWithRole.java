@@ -10,7 +10,7 @@ import java.util.StringJoiner;
  * @author 黄纯峰
  * @time 2021-12-02 15:40
  * @package com.rufeng.vuemall.domain.BO
- * @description 带角色信息的UserInfo，用于管理员查看
+ * @description 带角色信息的User
  */
 public class UserInfoWithRole extends SpUser {
     private List<SpRole> roles;
@@ -25,8 +25,7 @@ public class UserInfoWithRole extends SpUser {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UserInfoWithRole.class.getSimpleName() + "[", "]")
-                .add("roles=" + roles)
-                .toString();
+        return super.toString() + new StringJoiner(", ", UserInfoWithRole.class.getSimpleName() + "[", "]")
+                .add("roles=" + roles);
     }
 }

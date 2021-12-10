@@ -14,10 +14,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author 黄纯峰
@@ -36,8 +36,9 @@ public class RoleController {
      * 将角色permission树形化
      */
     private final Consumer<RoleWithPermission> TREEFY = role -> {
+        List<SpPermission> newRecords = new ArrayList<>();
         List<SpPermission> permissions = role.getPermissions();
-        HashMap<Integer, PermissionWithChild> map = new HashMap<>(64);
+        HashMap<Integer, PermissionWithChild> map = new HashMap<>(permissions.size());
         permissions.forEach(p -> {
             PermissionWithChild withChild = new PermissionWithChild();
             BeanUtils.copyProperties(p, withChild);
@@ -46,10 +47,11 @@ public class RoleController {
         map.values().forEach(p -> {
             if (p.getParentId() != 0) {
                 map.get(p.getId()).append(p);
+            } else {
+                newRecords.add(p);
             }
         });
-        role.setPermissions(
-                map.values().stream().filter(p -> p.getParentId() == 0).collect(Collectors.toList()));
+        role.setPermissions(newRecords);
     };
 
     public RoleController(SpRoleService roleService) {

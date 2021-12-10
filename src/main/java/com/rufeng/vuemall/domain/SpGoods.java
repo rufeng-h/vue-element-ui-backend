@@ -3,8 +3,10 @@ package com.rufeng.vuemall.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -73,17 +75,12 @@ public class SpGoods implements Serializable {
     /**
      * 添加商品时间
      */
-    private Integer addTime;
+    private Date createTime;
 
     /**
      * 修改商品时间
      */
-    private Integer updTime;
-
-    /**
-     * 软删除标志字段
-     */
-    private Integer deleteTime;
+    private Date updateTime;
 
     /**
      * 一级分类id
@@ -115,6 +112,22 @@ public class SpGoods implements Serializable {
      */
     private Integer goodsState;
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public Integer getGoodsId() {
         return goodsId;
     }
@@ -122,6 +135,7 @@ public class SpGoods implements Serializable {
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
     }
+
     public String getGoodsName() {
         return goodsName;
     }
@@ -129,6 +143,7 @@ public class SpGoods implements Serializable {
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
     }
+
     public BigDecimal getGoodsPrice() {
         return goodsPrice;
     }
@@ -136,6 +151,7 @@ public class SpGoods implements Serializable {
     public void setGoodsPrice(BigDecimal goodsPrice) {
         this.goodsPrice = goodsPrice;
     }
+
     public Integer getGoodsNumber() {
         return goodsNumber;
     }
@@ -143,6 +159,7 @@ public class SpGoods implements Serializable {
     public void setGoodsNumber(Integer goodsNumber) {
         this.goodsNumber = goodsNumber;
     }
+
     public Integer getGoodsWeight() {
         return goodsWeight;
     }
@@ -150,6 +167,7 @@ public class SpGoods implements Serializable {
     public void setGoodsWeight(Integer goodsWeight) {
         this.goodsWeight = goodsWeight;
     }
+
     public Integer getCatId() {
         return catId;
     }
@@ -157,6 +175,7 @@ public class SpGoods implements Serializable {
     public void setCatId(Integer catId) {
         this.catId = catId;
     }
+
     public String getGoodsIntroduce() {
         return goodsIntroduce;
     }
@@ -164,6 +183,7 @@ public class SpGoods implements Serializable {
     public void setGoodsIntroduce(String goodsIntroduce) {
         this.goodsIntroduce = goodsIntroduce;
     }
+
     public String getGoodsBigLogo() {
         return goodsBigLogo;
     }
@@ -171,6 +191,7 @@ public class SpGoods implements Serializable {
     public void setGoodsBigLogo(String goodsBigLogo) {
         this.goodsBigLogo = goodsBigLogo;
     }
+
     public String getGoodsSmallLogo() {
         return goodsSmallLogo;
     }
@@ -178,6 +199,7 @@ public class SpGoods implements Serializable {
     public void setGoodsSmallLogo(String goodsSmallLogo) {
         this.goodsSmallLogo = goodsSmallLogo;
     }
+
     public String getIsDel() {
         return isDel;
     }
@@ -185,27 +207,8 @@ public class SpGoods implements Serializable {
     public void setIsDel(String isDel) {
         this.isDel = isDel;
     }
-    public Integer getAddTime() {
-        return addTime;
-    }
 
-    public void setAddTime(Integer addTime) {
-        this.addTime = addTime;
-    }
-    public Integer getUpdTime() {
-        return updTime;
-    }
 
-    public void setUpdTime(Integer updTime) {
-        this.updTime = updTime;
-    }
-    public Integer getDeleteTime() {
-        return deleteTime;
-    }
-
-    public void setDeleteTime(Integer deleteTime) {
-        this.deleteTime = deleteTime;
-    }
     public Integer getCatOneId() {
         return catOneId;
     }
@@ -213,6 +216,7 @@ public class SpGoods implements Serializable {
     public void setCatOneId(Integer catOneId) {
         this.catOneId = catOneId;
     }
+
     public Integer getCatTwoId() {
         return catTwoId;
     }
@@ -220,6 +224,7 @@ public class SpGoods implements Serializable {
     public void setCatTwoId(Integer catTwoId) {
         this.catTwoId = catTwoId;
     }
+
     public Integer getCatThreeId() {
         return catThreeId;
     }
@@ -227,6 +232,7 @@ public class SpGoods implements Serializable {
     public void setCatThreeId(Integer catThreeId) {
         this.catThreeId = catThreeId;
     }
+
     public Integer getHotMumber() {
         return hotMumber;
     }
@@ -234,6 +240,7 @@ public class SpGoods implements Serializable {
     public void setHotMumber(Integer hotMumber) {
         this.hotMumber = hotMumber;
     }
+
     public Integer getIsPromote() {
         return isPromote;
     }
@@ -241,6 +248,7 @@ public class SpGoods implements Serializable {
     public void setIsPromote(Integer isPromote) {
         this.isPromote = isPromote;
     }
+
     public Integer getGoodsState() {
         return goodsState;
     }
@@ -252,25 +260,22 @@ public class SpGoods implements Serializable {
     @Override
     public String toString() {
         return "SpGoods{" +
-            "goodsId=" + goodsId +
-            ", goodsName=" + goodsName +
-            ", goodsPrice=" + goodsPrice +
-            ", goodsNumber=" + goodsNumber +
-            ", goodsWeight=" + goodsWeight +
-            ", catId=" + catId +
-            ", goodsIntroduce=" + goodsIntroduce +
-            ", goodsBigLogo=" + goodsBigLogo +
-            ", goodsSmallLogo=" + goodsSmallLogo +
-            ", isDel=" + isDel +
-            ", addTime=" + addTime +
-            ", updTime=" + updTime +
-            ", deleteTime=" + deleteTime +
-            ", catOneId=" + catOneId +
-            ", catTwoId=" + catTwoId +
-            ", catThreeId=" + catThreeId +
-            ", hotMumber=" + hotMumber +
-            ", isPromote=" + isPromote +
-            ", goodsState=" + goodsState +
-        "}";
+                "goodsId=" + goodsId +
+                ", goodsName=" + goodsName +
+                ", goodsPrice=" + goodsPrice +
+                ", goodsNumber=" + goodsNumber +
+                ", goodsWeight=" + goodsWeight +
+                ", catId=" + catId +
+                ", goodsIntroduce=" + goodsIntroduce +
+                ", goodsBigLogo=" + goodsBigLogo +
+                ", goodsSmallLogo=" + goodsSmallLogo +
+                ", isDel=" + isDel +
+                ", catOneId=" + catOneId +
+                ", catTwoId=" + catTwoId +
+                ", catThreeId=" + catThreeId +
+                ", hotMumber=" + hotMumber +
+                ", isPromote=" + isPromote +
+                ", goodsState=" + goodsState +
+                "}";
     }
 }

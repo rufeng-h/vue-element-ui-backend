@@ -1,6 +1,5 @@
 package com.rufeng.vuemall.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rufeng.vuemall.domain.AO.LoginParam;
@@ -35,20 +34,19 @@ public interface SpUserService extends IService<SpUser> {
     /**
      * 分页查询
      *
-     * @param page         分页参数
-     * @param queryWrapper 查询条件
-     * @return {@link IPage<UserInfoWithRole>}
-     * @author 黄纯峰
-     * @date 2021/11/30 14:18
+     * @param pageNum  num
+     * @param pageSize size
+     * @param ustatus  用户状态标值志
+     * @return page
      */
-    IPage<UserInfoWithRole> selectPage(IPage<SpUser> page, QueryWrapper<SpUser> queryWrapper);
+    IPage<UserInfoWithRole> queryPage(Integer pageNum, Integer pageSize, Integer ustatus);
 
     /**
      * 逻辑删除
      *
      * @param id id
      */
-    void deleteById(Long id);
+   UserInfoWithRole deleteById(Long id);
 
     /**
      * 根据关键字查询
@@ -66,7 +64,7 @@ public interface SpUserService extends IService<SpUser> {
      * @param roleIds 该用户的角色id列表
      * @return added count
      */
-    Integer addUser(SpUser user, List<Integer> roleIds);
+    UserInfoWithRole addUser(SpUser user, List<Integer> roleIds);
 
     /**
      * 校验字段值在数据库中是否已存在
@@ -84,5 +82,8 @@ public interface SpUserService extends IService<SpUser> {
      * @param roles roleList
      * @return updated count
      */
-    Integer updateUser(SpUser user, List<Integer> roles);
+    UserInfoWithRole updateUser(SpUser user, List<Integer> roles);
+
+
+    UserInfoWithRole getInfoWithRoleById(Long id);
 }

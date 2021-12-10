@@ -2,8 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rufeng.vuemall.mapper.SpUserMapper">
 
-    <select id="queryPage" resultType="com.rufeng.vuemall.domain.SpUser">
-        SELECT *
-        FROM sp_user ${ew.customSqlSegment}
+    <sql id="userColumns">
+        username,${alias}.id as uid, qq, password, mobile, introduction, email,
+        ${alias}.create_time as uctime,last_login_time,
+        ${alias}.status as ustatus,
+        age,
+        gender
+    </sql>
+
+    <sql id="roleColumns">
+        ${alias}.id as rid, name, desp, ${alias}.create_time as rctime, ${alias}.status as rstatus, update_time
+    </sql>
+
+    <resultMap id="userInfoWithRole" type="com.rufeng.vuemall.domain.BO.UserInfoWithRole" autoMapping="true">
+        <id property="id" column="uid"/>
+        <result property="status" column="ustatus"/>
+        <result property="createTime" column="uctime"/>
+        <collection property="roles" ofType="com.rufeng.vuemall.domain.SpRole" autoMapping="true">
+            <id property="id" column="rid"/>
+            <result property="createTime" column="rctime"/>
+            <result property="status" column="rstatus"/>
+        </collection>
+    </resultMap>
+    <select id="queryUserWithRole" resultMap="userInfoWithRole">
+        select
+        <include refid="userColumns">
+            <property name="alias" value="user"/>
+        </include>
+        ,
+        <include refid="roleColumns">
+            <property name="alias" value="role"/>
+        </include>
+        from sp_user as user
+        left join sp_user_role as s1 on user.id = s1.user_id
+        left join sp_role as role on role.id = s1.role_id
+        <if test="ew != null">
+            ${ew.customSqlSegment}
+        </if>
     </select>
 </mapper>

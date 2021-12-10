@@ -3,12 +3,13 @@ package com.rufeng.vuemall.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author rufeng
@@ -75,6 +76,7 @@ public class SpCategory implements Serializable {
     public void setCatId(Integer catId) {
         this.catId = catId;
     }
+
     public String getCatName() {
         return catName;
     }
@@ -82,6 +84,7 @@ public class SpCategory implements Serializable {
     public void setCatName(String catName) {
         this.catName = catName;
     }
+
     public Integer getCatPid() {
         return catPid;
     }
@@ -89,6 +92,7 @@ public class SpCategory implements Serializable {
     public void setCatPid(Integer catPid) {
         this.catPid = catPid;
     }
+
     public Integer getCatLevel() {
         return catLevel;
     }
@@ -96,6 +100,7 @@ public class SpCategory implements Serializable {
     public void setCatLevel(Integer catLevel) {
         this.catLevel = catLevel;
     }
+
     public Integer getCatDeleted() {
         return catDeleted;
     }
@@ -103,6 +108,7 @@ public class SpCategory implements Serializable {
     public void setCatDeleted(Integer catDeleted) {
         this.catDeleted = catDeleted;
     }
+
     public String getCatIcon() {
         return catIcon;
     }
@@ -110,6 +116,7 @@ public class SpCategory implements Serializable {
     public void setCatIcon(String catIcon) {
         this.catIcon = catIcon;
     }
+
     public String getCatSrc() {
         return catSrc;
     }
@@ -121,13 +128,13 @@ public class SpCategory implements Serializable {
     @Override
     public String toString() {
         return "SpCategory{" +
-            "catId=" + catId +
-            ", catName=" + catName +
-            ", catPid=" + catPid +
-            ", catLevel=" + catLevel +
-            ", catDeleted=" + catDeleted +
-            ", catIcon=" + catIcon +
-            ", catSrc=" + catSrc +
-        "}";
+                "catId=" + catId +
+                ", catName=" + catName +
+                ", catPid=" + catPid +
+                ", catLevel=" + catLevel +
+                ", catDeleted=" + catDeleted +
+                ", catIcon=" + catIcon +
+                ", catSrc=" + catSrc +
+                "}";
     }
 }

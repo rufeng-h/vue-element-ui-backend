@@ -29,7 +29,7 @@ public class Menu {
         MENU_LIST.add(authMenu);
 
         Menu goodsMenu = new Menu(id++, "商品管理", "", "goods");
-        goodsMenu.addSubMenu(new Menu(id++, "商品列表", "goods"));
+        goodsMenu.addSubMenu(new Menu(id++, "商品列表", "goodsList"));
         goodsMenu.addSubMenu(new Menu(id++, "分类参数", "goodsCategoryAttr"));
         goodsMenu.addSubMenu(new Menu(id++, "商品分类", "goodsCategories"));
         MENU_LIST.add(goodsMenu);

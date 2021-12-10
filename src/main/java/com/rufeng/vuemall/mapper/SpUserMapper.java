@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.rufeng.vuemall.domain.BO.UserInfoWithRole;
 import com.rufeng.vuemall.domain.SpUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,11 +19,15 @@ import org.apache.ibatis.annotations.Param;
 public interface SpUserMapper extends BaseMapper<SpUser> {
     /**
      * 分页搜索
-     * @param page
-     * @param wrapper
+     *
+     * @param page    p
+     * @param wrapper w
      * @return {@link IPage<SpUser>}
      * @author 黄纯峰
      * @date 2021/11/30 20:44
      */
-    IPage<SpUser> queryPage(IPage<SpUser> page, @Param(Constants.WRAPPER) QueryWrapper<SpUser> wrapper);
+    IPage<UserInfoWithRole> queryUserWithRole(IPage<SpUser> page, @Param(Constants.WRAPPER) QueryWrapper<SpUser> wrapper);
+
+
+    UserInfoWithRole queryUserWithRole(@Param(Constants.WRAPPER) QueryWrapper<SpUser> wrapper);
 }
